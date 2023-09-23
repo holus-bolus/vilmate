@@ -3,7 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="index.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        #container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 600px;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        div {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 100px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: #fff;
+        }
+    </style>
     <title>Div Click and Move</title>
 </head>
 <body>
@@ -11,22 +40,26 @@
     <script>
         // Function to create and append a new div element with unique text
         function createAndAppendDiv(index) {
-            const div = document.createElement('div');
-            div.textContent = 'div' + index;
-            div.addEventListener('click', () => togglePosition(div));
-            document.getElementById('container').appendChild(div);
+            const div = document.createElement("div");
+            div.textContent = "div" + index;
+            div.addEventListener("click", () => togglePosition(div));
+            document.getElementById("container").appendChild(div);
         }
+
         // Function to toggle the position of the clicked div
         function togglePosition(div) {
-            const currentIndex = Array.from(document.getElementById('container').children).indexOf(div);
-            if (currentIndex === 0) {
-                // If it's already at the first position, move it back to its original position
-                document.getElementById('container').insertBefore(div, document.getElementById('container').children[div.dataset.originalIndex]);
+            const currentIndex = Array.from(document.getElementById("container").children).indexOf(div);
+            const originalIndex = div.dataset.originalIndex;
+
+            if (originalIndex === undefined) {
+                // If it's the first click, move it to the first position
+                document.getElementById("container").insertBefore(div, document.getElementById("container").firstChild);
+                div.dataset.originalIndex = currentIndex;
             } else {
-                // Otherwise, move it to the first position
-                const originalIndex = div.dataset.originalIndex || currentIndex;
-                document.getElementById('container').insertBefore(div, document.getElementById('container').firstChild);
-                div.dataset.originalIndex = originalIndex;
+                // If it's the second click, move it back to its original position
+                const originalDiv = document.getElementById("container").children[originalIndex];
+                document.getElementById("container").insertBefore(div, originalDiv.nextSibling);
+                div.dataset.originalIndex = undefined;
             }
         }
 
