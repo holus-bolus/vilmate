@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Div Click and Move</title>
+</head>
+<body>
+<div id="container">
+    <script>
+        // Function to create and append a new div element with unique text
+        function createAndAppendDiv(index) {
+            const div = document.createElement('div');
+            div.textContent = 'div' + index;
+            div.addEventListener('click', () => togglePosition(div));
+            document.getElementById('container').appendChild(div);
+        }
+        // Function to toggle the position of the clicked div
+        function togglePosition(div) {
+            const currentIndex = Array.from(document.getElementById('container').children).indexOf(div);
+            if (currentIndex === 0) {
+                // If it's already at the first position, move it back to its original position
+                document.getElementById('container').insertBefore(div, document.getElementById('container').children[div.dataset.originalIndex]);
+            } else {
+                // Otherwise, move it to the first position
+                const originalIndex = div.dataset.originalIndex || currentIndex;
+                document.getElementById('container').insertBefore(div, document.getElementById('container').firstChild);
+                div.dataset.originalIndex = originalIndex;
+            }
+        }
+
+        // Add 100 div elements to the container on page load
+        for (let i = 0; i < 100; i++) {
+            createAndAppendDiv(i);
+        }
+    </script>
+</div>
+</body>
+</html>
